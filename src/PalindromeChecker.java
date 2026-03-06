@@ -1,13 +1,22 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-  //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-  // to see how IntelliJ IDEA suggests fixing it.
-  IO.println(String.format("Hello and welcome!"));
+// Class – Acts as a container for the Palindrome Checker application logic
+public class PalindromeChecker {
 
-  for (int i = 1; i <= 5; i++) {
-    //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-    // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-    IO.println("i = " + i);
-  }
+    // Main Method – Entry point of the Java application
+    public static void main(String[] args) {
+
+        // Console Output – Display welcome message and app details
+        System.out.println("===================================");
+        System.out.println(" Welcome to Palindrome Checker App ");
+        System.out.println("===================================");
+
+        // Application name and version
+        System.out.println("Application Name: Palindrome Checker");
+        System.out.println("Version: 1.0.0");
+
+        // Application Flow Control – Continue to next use case or exit
+        System.out.println("Initializing palindrome processing...");
+
+        // Placeholder for next use case logic
+        // e.g., UC2: Accept user input and check palindrome
+    }
 }
