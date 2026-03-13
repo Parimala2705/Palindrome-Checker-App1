@@ -1,22 +1,21 @@
 /**
- * UseCase12PalindromeCheckerApp.java
+ * UseCase13PalindromeCheckerApp.java
  *
- * This class demonstrates the Strategy Pattern for palindrome checking.
- * Different algorithms (Stack, Deque) are encapsulated as strategies
- * and can be chosen dynamically at runtime.
+ * This class demonstrates performance comparison of different
+ * palindrome checking algorithms using System.nanoTime().
  *
  * @author YourName
- * @version 12.0
+ * @version 13.0
  */
 
 import java.util.*;
 
-// Strategy interface
 interface PalindromeStrategy {
     boolean checkPalindrome(String input);
+    String getName();
 }
 
-// Concrete strategy: Stack-based palindrome check
+// Stack-based strategy
 class StackStrategy implements PalindromeStrategy {
     @Override
     public boolean checkPalindrome(String input) {
@@ -31,9 +30,14 @@ class StackStrategy implements PalindromeStrategy {
         }
         return normalized.equals(reversed.toString());
     }
+
+    @Override
+    public String getName() {
+        return "Stack Strategy";
+    }
 }
 
-// Concrete strategy: Deque-based palindrome check
+// Deque-based strategy
 class DequeStrategy implements PalindromeStrategy {
     @Override
     public boolean checkPalindrome(String input) {
@@ -51,22 +55,30 @@ class DequeStrategy implements PalindromeStrategy {
         }
         return true;
     }
+
+    @Override
+    public String getName() {
+        return "Deque Strategy";
+    }
 }
 
-// Context class
-class PalindromeCheckerContext {
-    private PalindromeStrategy strategy;
-
-    public PalindromeCheckerContext(PalindromeStrategy strategy) {
-        this.strategy = strategy;
+// Recursive strategy
+class RecursiveStrategy implements PalindromeStrategy {
+    @Override
+    public boolean checkPalindrome(String input) {
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        return isPalindromeRecursive(normalized, 0, normalized.length() - 1);
     }
 
-    public void setStrategy(PalindromeStrategy strategy) {
-        this.strategy = strategy;
+    private boolean isPalindromeRecursive(String str, int start, int end) {
+        if (start >= end) return true;
+        if (str.charAt(start) != str.charAt(end)) return false;
+        return isPalindromeRecursive(str, start + 1, end - 1);
     }
 
-    public boolean executeCheck(String input) {
-        return strategy.checkPalindrome(input);
+    @Override
+    public String getName() {
+        return "Recursive Strategy";
     }
 }
 
@@ -77,31 +89,29 @@ public class PalindromeCheckerApp {
 
         System.out.println("=======================================");
         System.out.println(" Palindrome Checker Application ");
-        System.out.println(" UC12: Strategy Pattern for Palindrome Algorithms ");
+        System.out.println(" UC13: Performance Comparison ");
         System.out.println("=======================================\n");
 
         System.out.print("Enter a string to check: ");
         String input = scanner.nextLine();
 
-        // Choose strategy dynamically
-        System.out.println("\nChoose strategy:");
-        System.out.println("1. Stack Strategy");
-        System.out.println("2. Deque Strategy");
-        System.out.print("Enter choice (1 or 2): ");
-        int choice = scanner.nextInt();
+        // List of strategies
+        List<PalindromeStrategy> strategies = Arrays.asList(
+                new StackStrategy(),
+                new DequeStrategy(),
+                new RecursiveStrategy()
+        );
 
-        PalindromeCheckerContext context;
-        if (choice == 1) {
-            context = new PalindromeCheckerContext(new StackStrategy());
-        } else {
-            context = new PalindromeCheckerContext(new DequeStrategy());
-        }
+        // Run each strategy and measure time
+        for (PalindromeStrategy strategy : strategies) {
+            long startTime = System.nanoTime();
+            boolean result = strategy.checkPalindrome(input);
+            long endTime = System.nanoTime();
+            long duration = endTime - startTime;
 
-        // Execute palindrome check
-        if (context.executeCheck(input)) {
-            System.out.println("Result: \"" + input + "\" is a Palindrome.");
-        } else {
-            System.out.println("Result: \"" + input + "\" is NOT a Palindrome.");
+            System.out.println(strategy.getName() + ": " +
+                    (result ? "Palindrome" : "Not Palindrome") +
+                    " | Execution Time: " + duration + " ns");
         }
 
         System.out.println("\nApplication terminated successfully.");
